@@ -1,0 +1,6 @@
+/front-end/.idea/
+.DS_Store
+go.sum
+.idea/Microservies-Golang.iml
+.idea/modules.xml
+.idea/vcs.xml
