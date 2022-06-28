@@ -19,8 +19,9 @@ const webPort = "80"
 var counts int16
 
 type Config struct {
-	DB     *sql.DB
-	Models data.Models
+	DB          *sql.DB
+	Models      data.Models
+	MaxFileSize int
 }
 
 func main() {
@@ -32,8 +33,9 @@ func main() {
 	}
 
 	app := Config{
-		DB:     conn,
-		Models: data.New(conn),
+		DB:          conn,
+		Models:      data.New(conn),
+		MaxFileSize: 0,
 	}
 
 	srv := &http.Server{
