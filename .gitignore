@@ -4,3 +4,4 @@ go.sum
 .idea/Microservies-Golang.iml
 .idea/modules.xml
 .idea/vcs.xml
+/db-data/postgres/*

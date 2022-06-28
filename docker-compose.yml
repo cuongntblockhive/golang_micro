@@ -11,3 +11,30 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+
+  authentication-service:
+    build:
+      context: ./authentication-service
+      dockerfile: ./authentication-service.dockerfile
+    restart: always
+    ports:
+      - "8081:80"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "host=postgres port=5432 user=cuongnt password=25011998aA@ dbname=micro_go_db sslmode=disable timezone=UTC connect_timeout=5"
+
+  postgres:
+    image: 'postgres:14.2'
+    ports:
+      - "5432:5432"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: cuongnt
+      POSTGRES_PASSWORD: 25011998aA@
+      POSTGRES_DB: micro_go_db
+    volumes:
+      - ./db-data/postgres/:/var/lib/postgresql/data/
