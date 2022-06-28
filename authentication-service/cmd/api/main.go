@@ -6,9 +6,13 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"time"
 )
 
 const webPort = "80"
+
+var counts int16
 
 type Config struct {
 	DB     *sql.DB
@@ -31,4 +35,39 @@ func main() {
 		log.Panicf("Err run server")
 	}
 
+}
+
+func openDB(dsn string) (*sql.DB, error) {
+	db, err := sql.Open("pgx", dsn)
+	if err != nil {
+		return nil, err
+	}
+
+	err = db.Ping()
+	if err != nil {
+		return nil, err
+	}
+	return db, nil
+}
+
+func connectToDB() *sql.DB {
+	dsn := os.Getenv("DSN")
+
+	for {
+		connection, err := openDB(dsn)
+		if err != nil {
+			log.Println("Pg not ready")
+			counts++
+		} else {
+			log.Println("Connected to PG")
+			return connection
+		}
+		if counts > 10 {
+			log.Println(err)
+			return nil
+		}
+		log.Println("Backoff in 2 seconds")
+		time.Sleep(2 * time.Second)
+		continue
+	}
 }
