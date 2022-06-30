@@ -40,13 +40,13 @@ func (app *Config) Authenticate(w http.ResponseWriter, request *http.Request) {
 	user, err := app.Models.User.GetByEmail(data.Email)
 
 	if err != nil {
-		app.ErrorJSON(w, errors.New("Invalid credential"), http.StatusBadRequest)
+		app.ErrorJSON(w, errors.New("invalid credential"), http.StatusUnauthorized)
 		return
 	}
 	isValid, err := user.PasswordMatches(data.Password)
 
 	if err != nil || !isValid {
-		app.ErrorJSON(w, errors.New("Invalid credential"), http.StatusBadRequest)
+		app.ErrorJSON(w, errors.New("invalid credential"), http.StatusUnauthorized)
 		return
 	}
 

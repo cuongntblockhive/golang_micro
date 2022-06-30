@@ -22,5 +22,6 @@ func (app *Config) routes() http.Handler {
 	chi.Use(middleware.Heartbeat("/ping"))
 
 	chi.Post("/broker", app.Broker)
+	chi.Post("/handle", app.HandleSubmission)
 	return chi
 }

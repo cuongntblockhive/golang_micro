@@ -8,10 +8,14 @@ import (
 
 const webPort = "80"
 
-type Config struct{}
+type Config struct {
+	MaxFileSize int
+}
 
 func main() {
-	app := Config{}
+	app := Config{
+		MaxFileSize: 0,
+	}
 
 	log.Printf("Staring boroker services at %s", webPort)
 	// define server
