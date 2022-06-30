@@ -7,6 +7,7 @@
                 <h1 class="mt-5">Test microservices</h1>
                 <hr>
                 <button id="getBrokerSrvData">Get broker-service data</button>
+                <button id="testAuth">Test Auth</button>
                 <div id="output" class="mt-5" style="outline: 1px solid silver; padding: 2em;">
                     <span class="text-muted" id="output">Output shows here...</span>
                 </div>
@@ -32,11 +33,36 @@
 {{define "js"}}
     <script>
         const getBrokerDataBtn = document.getElementById("getBrokerSrvData")
+        const testAuthBtn = document.getElementById("testAuth")
         const output = document.getElementById("output")
         const received = document.getElementById("received")
         getBrokerDataBtn.addEventListener("click", function(){
             fetch('http://localhost:8080/broker', {
                 method: "POST"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("data",data)
+                    output.innerHTML = data.message;
+                    received.innerHTML = JSON.stringify(data);
+                });
+        })
+
+        testAuthBtn.addEventListener("click", function(){
+            const header = new Headers({
+                "Content-Type": "application/json"
+            })
+            const payload = {
+                action: "auth",
+                auth: {
+                    email: "cuongnt.blockhive@gmail.com",
+                    password: "25011998aA@"
+                }
+            }
+            fetch('http://localhost:8080/handle', {
+                method: "POST",
+                body: JSON.stringify(payload),
+                headers: header
             })
                 .then(response => response.json())
                 .then(data => {
