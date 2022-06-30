@@ -8,14 +8,14 @@ import (
 )
 
 type JsonResponse struct {
-	Error   bool   `json:"error"`
-	Message string `json:"message"`
-	Data    any    `json:"data,omitempty"`
+	Error   bool        `json:"error"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data,omitempty"`
 }
 
 type RequestSubmissionPayload struct {
 	Action string      `json:"action"`
-	Auth   AuthPayload `json:"authPayload,omitempty"`
+	Auth   AuthPayload `json:"auth,omitempty"`
 }
 
 type AuthPayload struct {
