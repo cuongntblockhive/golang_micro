@@ -43,11 +43,10 @@ func main() {
 	app := Config{
 		Models: data.New(client),
 	}
-	serve(app)
-
+	go app.serve()
 }
 
-func serve(app Config) {
+func (app *Config) serve() {
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%s", webPort),
 		Handler: app.routes(),
@@ -59,6 +58,7 @@ func serve(app Config) {
 		log.Panicf("Err run server")
 	}
 }
+
 func connectToMongo() (*mongo.Client, error) {
 	optionClient := options.Client().ApplyURI(mongoUrl)
 	optionClient.SetAuth(options.Credential{
