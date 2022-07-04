@@ -99,3 +99,24 @@ func (l LogEntry) DropCollection() error {
 	}
 	return nil
 }
+
+func (l LogEntry) Update() (*mongo.UpdateResult, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+	collection := client.Database("logs").Collection("logs")
+	result, err := collection.UpdateOne(
+		ctx,
+		bson.M{"_id": l.ID},
+		bson.D{
+			{"$set", bson.D{
+				{"name", l.Name},
+				{"data", l.Data},
+				{"updated_at", time.Now()},
+			}},
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}

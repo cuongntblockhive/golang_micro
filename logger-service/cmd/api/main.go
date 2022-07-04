@@ -2,9 +2,12 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
+	"logger/data"
+	"net/http"
 	"os"
 	"time"
 )
@@ -17,6 +20,10 @@ const (
 )
 
 var client *mongo.Client
+
+type Config struct {
+	Models data.Models
+}
 
 func main() {
 	mongoClient, err := connectToMongo()
@@ -32,8 +39,26 @@ func main() {
 			panic(err)
 		}
 	}()
+
+	app := Config{
+		Models: data.New(client),
+	}
+	serve(app)
+
 }
 
+func serve(app Config) {
+	srv := &http.Server{
+		Addr:    fmt.Sprintf(":%s", webPort),
+		Handler: app.routes(),
+	}
+	// start server
+	err := srv.ListenAndServe()
+
+	if err != nil {
+		log.Panicf("Err run server")
+	}
+}
 func connectToMongo() (*mongo.Client, error) {
 	optionClient := options.Client().ApplyURI(mongoUrl)
 	optionClient.SetAuth(options.Credential{
