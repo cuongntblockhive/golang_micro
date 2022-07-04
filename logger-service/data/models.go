@@ -3,6 +3,7 @@ package data
 import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 	"time"
@@ -52,6 +53,7 @@ func (l LogEntry) All() ([]LogEntry, error) {
 	cur, err := collection.Find(ctx, bson.M{})
 	if err != nil {
 		log.Fatal(err)
+		return nil, err
 	}
 	defer cur.Close(ctx)
 	var logEntries []LogEntry
@@ -66,4 +68,34 @@ func (l LogEntry) All() ([]LogEntry, error) {
 		}
 	}
 	return logEntries, nil
+}
+
+func (l LogEntry) GetOne(id string) (*LogEntry, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+	collection := client.Database("logs").Collection("logs")
+	docID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+
+	var entry LogEntry
+	err = collection.FindOne(ctx, bson.M{"_id": docID}).Decode(&entry)
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	return &entry, nil
+}
+
+func (l LogEntry) DropCollection() error {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+	collection := client.Database("logs").Collection("logs")
+
+	if err := collection.Drop(ctx); err != nil {
+		return err
+	}
+	return nil
 }
