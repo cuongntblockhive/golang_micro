@@ -25,6 +25,15 @@ services:
     environment:
       DSN: "host=postgres port=5432 user=cuongnt password=25011998aA@ dbname=micro_go_db sslmode=disable timezone=UTC connect_timeout=5"
 
+  logger-service:
+    build:
+      context: ./logger-service
+      dockerfile: .
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+
   postgres:
     image: 'postgres:14.2'
     ports:
@@ -45,7 +54,7 @@ services:
       - "27017:27017"
     environment:
       MONGO_INITDB_DATABASE: logs
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_ROOT_USERNAME: cuongnt
+      MONGO_INITDB_ROOT_PASSWORD: 25011998aA@
     volumes:
       - ./db-data/mongo/:/data/db
