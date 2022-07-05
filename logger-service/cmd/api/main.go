@@ -15,7 +15,7 @@ import (
 const (
 	webPort = "81"
 	//rpcConn  = "5001"
-	mongoUrl = "mongodb://localhost:27017"
+	mongoUrl = "mongodb://mongo:27017"
 	//grpcPort = "50001"
 )
 
