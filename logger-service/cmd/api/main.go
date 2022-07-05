@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	webPort = "80"
+	webPort = "81"
 	//rpcConn  = "5001"
 	mongoUrl = "mongodb://localhost:27017"
 	//grpcPort = "50001"
@@ -56,7 +56,7 @@ func (app *Config) serve() {
 	err := srv.ListenAndServe()
 
 	if err != nil {
-		log.Panicf("Err run server")
+		log.Panicf("Err run server %s", err)
 	}
 	log.Printf("ListenAndServe")
 }
