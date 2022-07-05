@@ -58,3 +58,9 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: 25011998aA@
     volumes:
       - ./db-data/mongo/:/data/db
+
+  mailhog:
+    image: mailhog/mailhog:lastest
+    ports:
+      - "1025:1025"
+      - "8025:8025"
