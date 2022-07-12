@@ -20,6 +20,6 @@ func (app *Config) routes() http.Handler {
 	}))
 
 	chi.Use(middleware.Heartbeat("/ping"))
-
+	chi.Post("/send", app.SendMail)
 	return chi
 }
