@@ -6,7 +6,7 @@ COPY . /app
 
 RUN CGO_ENABLED=0 go build -o mailApp ./cmd/api
 
-RUN chmod +x /app/loggerApp
+RUN chmod +x /app/mailApp
 
 FROM alpine:latest
 

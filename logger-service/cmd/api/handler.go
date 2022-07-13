@@ -30,6 +30,7 @@ func (app *Config) WriteLog(w http.ResponseWriter, request *http.Request) {
 	err = app.Models.LogEntry.Insert(log)
 	if err != nil {
 		app.ErrorJSON(w, err)
+		return
 	}
 
 	res := JsonResponse{

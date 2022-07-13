@@ -28,16 +28,20 @@ services:
   logger-service:
     build:
       context: ./logger-service
-      dockerfile: .
+      dockerfile: ./logger-service.dockerfile
     restart: always
+      - "8083:80"
     deploy:
       mode: replicated
       replicas: 1
+    environment:
+      MONGO_USER_NAME: "cuongnt"
+      MONGO_PASSWORD: "25011998"
 
   mail-service:
     build:
       context: ./mail-service
-      dockerfile: .
+      dockerfile: ./mail-service.dockerfile
     restart: always
     ports:
       - "8082:80"
@@ -46,7 +50,7 @@ services:
       replicas: 1
     environment:
       MAIL_DOMAIN: "localhost"
-      MAIL_HOST: "mailhog"
+      MAIL_HOST: "mail-hog"
       MAIL_PORT: 1025
       MAIL_USER_NAME: ""
       MAIL_PASSWORD: ""
@@ -71,7 +75,7 @@ services:
   mongo:
     image: 'mongo:4.2.16-bionic'
     ports:
-      - "27017:27017"
+      - "27018:27017"
     environment:
       MONGO_INITDB_DATABASE: logs
       MONGO_INITDB_ROOT_USERNAME: cuongnt
@@ -79,8 +83,8 @@ services:
     volumes:
       - ./db-data/mongo/:/data/db
 
-  mailhog:
-    image: mailhog/mailhog:lastest
+  mail-hog:
+    image: mailhog/mailhog:latest
     ports:
       - "1025:1025"
       - "8025:8025"
