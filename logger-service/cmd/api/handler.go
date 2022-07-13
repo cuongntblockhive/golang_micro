@@ -21,6 +21,7 @@ func (app *Config) WriteLog(w http.ResponseWriter, request *http.Request) {
 	err := app.ReadJSON(w, request, &req)
 	if err != nil {
 		app.ErrorJSON(w, err)
+		return
 	}
 	log := data.LogEntry{
 		Name: req.Name,
