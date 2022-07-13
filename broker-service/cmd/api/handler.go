@@ -172,7 +172,7 @@ func (app *Config) sendMail(w http.ResponseWriter, mailPayload MailPayload) {
 	}
 	res := JSONResponse{
 		Error:   false,
-		Message: "Nessage sen to " + mailPayload.To,
+		Message: "Message sent to " + mailPayload.To,
 	}
 	app.WriteJSON(w, http.StatusAccepted, res)
 }
