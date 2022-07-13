@@ -9,6 +9,7 @@
                 <button id="getBrokerSrvData">Get broker-service data</button>
                 <button id="testAuth">Test Auth</button>
                 <button id="testLogger">Test Logger</button>
+                <button id="testMail">Test Logger</button>
                 <div id="output" class="mt-5" style="outline: 1px solid silver; padding: 2em;">
                     <span class="text-muted" id="output">Output shows here...</span>
                 </div>
@@ -36,21 +37,48 @@
         const getBrokerDataBtn = document.getElementById("getBrokerSrvData")
         const testAuthBtn = document.getElementById("testAuth")
         const testLogBtn = document.getElementById("testLogger")
+        const testMailBtn = document.getElementById("testMail")
         const output = document.getElementById("output")
         const received = document.getElementById("received")
-        getBrokerDataBtn.addEventListener("click", function(){
+        getBrokerDataBtn.addEventListener("click", function () {
             fetch('http://localhost:8080/broker', {
                 method: "POST"
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log("data",data)
+                    console.log("data", data)
                     output.innerHTML = data.message;
                     received.innerHTML = JSON.stringify(data);
                 });
         })
 
-        testAuthBtn.addEventListener("click", function(){
+        testMailBtn.addEventListener("click", function () {
+            const header = new Headers({
+                "Content-Type": "application/json"
+            })
+            const payload = {
+                action: "mail",
+                auth: {
+                    from: "cuongnt.blockhive@gmail.com",
+                    to: "1610373@hcmut.edu.vn",
+                    subject: "Test Mail",
+                    message: "Hello world",
+                }
+            }
+            fetch('http://localhost:8080/handle', {
+                method: "POST",
+                body: JSON.stringify(payload),
+                headers: header
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("data", data)
+                    output.innerHTML = data.message;
+                    received.innerHTML = JSON.stringify(data);
+                });
+        })
+
+        testAuthBtn.addEventListener("click", function () {
             const header = new Headers({
                 "Content-Type": "application/json"
             })
