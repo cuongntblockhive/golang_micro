@@ -53,9 +53,6 @@
         })
 
         testMailBtn.addEventListener("click", function () {
-            const header = new Headers({
-                "Content-Type": "application/json"
-            })
             const payload = {
                 action: "mail",
                 auth: {
@@ -68,7 +65,6 @@
             fetch('http://localhost:8080/handle', {
                 method: "POST",
                 body: JSON.stringify(payload),
-                headers: header
             })
                 .then(response => response.json())
                 .then(data => {
@@ -79,9 +75,6 @@
         })
 
         testAuthBtn.addEventListener("click", function () {
-            const header = new Headers({
-                "Content-Type": "application/json"
-            })
             const payload = {
                 action: "auth",
                 auth: {
@@ -92,7 +85,6 @@
             fetch('http://localhost:8080/handle', {
                 method: "POST",
                 body: JSON.stringify(payload),
-                headers: header
             })
                 .then(response => response.json())
                 .then(data => {
@@ -103,9 +95,6 @@
         })
 
         testLogBtn.addEventListener("click", function(){
-            const header = new Headers({
-                "Content-Type": "application/json"
-            })
             const payload = {
                 action: "log",
                 log: {
@@ -113,10 +102,9 @@
                     data: "verysecret"
                 }
             }
-            fetch('http://localhost:8080/log', {
+            fetch('http://localhost:8080/handle', {
                 method: "POST",
                 body: JSON.stringify(payload),
-                headers: header
             })
                 .then(response => response.json())
                 .then(data => {
