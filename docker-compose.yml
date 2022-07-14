@@ -30,13 +30,12 @@ services:
       context: ./logger-service
       dockerfile: ./logger-service.dockerfile
     restart: always
-      - "8083:80"
     deploy:
       mode: replicated
       replicas: 1
     environment:
       MONGO_USER_NAME: "cuongnt"
-      MONGO_PASSWORD: "25011998"
+      MONGO_PASSWORD: "25011998aA@"
 
   mail-service:
     build:
