@@ -9,7 +9,7 @@
                 <button id="getBrokerSrvData">Get broker-service data</button>
                 <button id="testAuth">Test Auth</button>
                 <button id="testLogger">Test Logger</button>
-                <button id="testMail">Test Logger</button>
+                <button id="testMail">Test Mail</button>
                 <div id="output" class="mt-5" style="outline: 1px solid silver; padding: 2em;">
                     <span class="text-muted" id="output">Output shows here...</span>
                 </div>
@@ -19,7 +19,7 @@
             <div class="col">
                 <h4 class="mt-5">Sent</h4>
                 <div class="mt-1" style="outline: 1px solid silver; padding: 2em;">
-                    <pre id="payload"><span class="text-muted">Nothing sent yet...</span></pre>
+                    <pre id="sent"><span class="text-muted" id="sent">Nothing sent yet...</span></pre>
                 </div>
             </div>
             <div class="col">
@@ -39,6 +39,7 @@
         const testLogBtn = document.getElementById("testLogger")
         const testMailBtn = document.getElementById("testMail")
         const output = document.getElementById("output")
+        const sent = document.getElementById("sent")
         const received = document.getElementById("received")
         getBrokerDataBtn.addEventListener("click", function () {
             fetch('http://localhost:8080/broker', {
@@ -71,6 +72,7 @@
                     console.log("data", data)
                     output.innerHTML = data.message;
                     received.innerHTML = JSON.stringify(data);
+                    sent.innerHTML = JSON.stringify(payload)
                 });
         })
 
@@ -78,8 +80,8 @@
             const payload = {
                 action: "auth",
                 auth: {
-                    email: "cuongnt.blockhive@gmail.com",
-                    password: "25011998aA@"
+                    email: "admin@example.com",
+                    password: "verysecret",
                 }
             }
             fetch('http://localhost:8080/handle', {
@@ -91,6 +93,7 @@
                     console.log("data",data)
                     output.innerHTML = data.message;
                     received.innerHTML = JSON.stringify(data);
+                    sent.innerHTML = JSON.stringify(payload)
                 });
         })
 
@@ -111,6 +114,7 @@
                     console.log("data",data)
                     output.innerHTML = data.message;
                     received.innerHTML = JSON.stringify(data);
+                    sent.innerHTML = JSON.stringify(payload)
                 });
         })
     </script>
