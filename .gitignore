@@ -6,3 +6,4 @@ go.sum
 .idea/vcs.xml
 /db-data/postgres/*
 /db-data/mongo/*
+/db-data/rabbitmq/*
