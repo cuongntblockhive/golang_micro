@@ -12,6 +12,6 @@ FROM alpine:latest
 
 WORKDIR /root/
 
-COPY --from=builder /app/mailApp .
-
-CMD ["./mailApp"]
+COPY --from=builder /app/mailApp ./
+COPY template ./template
+CMD ["/root/mailApp"]

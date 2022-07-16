@@ -54,7 +54,7 @@ services:
       MAIL_HOST: "mail-hog"
       MAIL_PORT: 1025
       MAIL_USER_NAME: ""
-      MAIL_PASSWORD: ""
+      MAIL_PASSWORD: "25011998aA@"
       MAIL_ENCRYPTION: "none"
       MAIL_FROM_NAME: "Cuong Nguyen"
       MAIL_FROM_ADDRESS: "cuongnt.blockhive@gmail.com"
