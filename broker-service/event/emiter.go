@@ -5,11 +5,11 @@ import (
 	"log"
 )
 
-type Emiter struct {
+type Emitter struct {
 	connection *amqp.Connection
 }
 
-func (e *Emiter) Setup() error {
+func (e *Emitter) Setup() error {
 	channel, err := e.connection.Channel()
 	if err != nil {
 		return err
@@ -18,7 +18,7 @@ func (e *Emiter) Setup() error {
 	return declareExchange(channel)
 }
 
-func (e *Emiter) Push(event string, severity string) error {
+func (e *Emitter) Push(event string, severity string) error {
 	channel, err := e.connection.Channel()
 	if err != nil {
 		return err
@@ -36,13 +36,13 @@ func (e *Emiter) Push(event string, severity string) error {
 	return nil
 }
 
-func NewEventEmitter(conn *amqp.Connection) (Emiter, error) {
-	emiter := Emiter{
+func NewEventEmitter(conn *amqp.Connection) (Emitter, error) {
+	emitter := Emitter{
 		connection: conn,
 	}
-	err := emiter.Setup()
+	err := emitter.Setup()
 	if err != nil {
-		return Emiter{}, err
+		return Emitter{}, err
 	}
-	return emiter, nil
+	return emitter, nil
 }

@@ -15,14 +15,14 @@ type Consumer struct {
 }
 
 func NewConsumer(conn *amqp.Connection) (Consumer, error) {
-	consumner := Consumer{
+	consumer := Consumer{
 		conn: conn,
 	}
-	err := consumner.setup()
+	err := consumer.setup()
 	if err != nil {
 		return Consumer{}, err
 	}
-	return consumner, nil
+	return consumer, nil
 }
 
 func (consumer *Consumer) setup() error {
