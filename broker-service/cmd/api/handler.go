@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"net/rpc"
 )
 
 type JsonResponse struct {
@@ -60,7 +61,8 @@ func (app *Config) HandleSubmission(w http.ResponseWriter, request *http.Request
 		app.authenticate(w, requestData.Auth)
 	case "log":
 		//app.logItem(w, requestData.Log)
-		app.logEventViaRabbit(w, requestData.Log)
+		//app.logEventViaRabbit(w, requestData.Log)
+		app.logItemViaRPC(w, requestData.Log)
 	case "mail":
 		app.sendMail(w, requestData.Mail)
 	default:
@@ -190,6 +192,33 @@ func (app *Config) logEventViaRabbit(w http.ResponseWriter, l LogPayload) {
 	payload.Message = "Logged via RabbitMQ"
 
 	app.WriteJSON(w, http.StatusAccepted, payload)
+}
+
+type RPCPayload struct {
+	Name string
+	Data string
+}
+
+func (app *Config) logItemViaRPC(w http.ResponseWriter, l LogPayload) {
+	client, err := rpc.Dial("tcp", "logger-service:5001")
+	if err != nil {
+		app.ErrorJSON(w, err)
+		return
+	}
+	rpcPayload := RPCPayload{
+		Name: l.Name,
+		Data: l.Data,
+	}
+
+	var result string
+	err = client.Call("RPCServer.LogInfo", rpcPayload, &result)
+	if err != nil {
+		app.ErrorJSON(w, err)
+		return
+	}
+	payload := JsonResponse{Error: false, Message: "Call RPC success", Data: result}
+	app.WriteJSON(w, http.StatusAccepted, payload)
+
 }
 
 func (app *Config) pushToQueue(name string, msg string) error {
