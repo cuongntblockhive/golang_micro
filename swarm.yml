@@ -1,0 +1,87 @@
+version: '3'
+
+services:
+  broker-service:
+    image: cuongntblockhive/micro_golang_broker:1.0.0
+    ports:
+      - "8080:80"
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  listener-service:
+    image: cuongntblockhive/micro_golang_listener:1.0.0
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  authentication-service:
+    image: cuongntblockhive/micro_golang_authentication:1.0.0
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "host=postgres port=5432 user=cuongnt password=25011998aA@ dbname=micro_go_db sslmode=disable timezone=UTC connect_timeout=5"
+
+  logger-service:
+    image: cuongntblockhive/micro_golang_logger:1.0.0
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      MONGO_USER_NAME: "cuongnt"
+      MONGO_PASSWORD: "25011998aA@"
+
+  mail-service:
+    image: cuongntblockhive/micro_golang_mail:1.0.0
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      MAIL_DOMAIN: "localhost"
+      MAIL_HOST: "mail-hog"
+      MAIL_PORT: 1025
+      MAIL_USER_NAME: ""
+      MAIL_PASSWORD: "25011998aA@"
+      MAIL_ENCRYPTION: "none"
+      MAIL_FROM_NAME: "Cuong Nguyen"
+      MAIL_FROM_ADDRESS: "cuongnt.blockhive@gmail.com"
+
+  rabbitmq:
+    image: rabbitmq:3.9.21-alpine
+    deploy:
+      mode: global
+
+  mail-hog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "8025:8025"
+    deploy:
+      mode: global
+
+  mongo:
+    image: 'mongo:4.2.16-bionic'
+    ports:
+      - "27018:27017"
+    deploy:
+      mode: global
+    environment:
+      MONGO_INITDB_DATABASE: logs
+      MONGO_INITDB_ROOT_USERNAME: cuongnt
+      MONGO_INITDB_ROOT_PASSWORD: 25011998aA@
+    volumes:
+      - ./db-data/mongo/:/data/db
+
+  postgres:
+    image: 'postgres:14.2'
+    ports:
+      - "5431:5432"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: cuongnt
+      POSTGRES_PASSWORD: 25011998aA@
+      POSTGRES_DB: micro_go_db
+    volumes:
+      - ./db-data/postgres/:/var/lib/postgresql/data/
