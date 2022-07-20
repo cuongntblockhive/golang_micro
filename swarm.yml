@@ -2,9 +2,13 @@ version: '3'
 
 services:
   broker-service:
-    image: cuongntblockhive/micro_golang_broker:1.0.0
-    ports:
-      - "8080:80"
+    image: cuongntblockhive/micro_golang_broker:1.0.1
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  front-service:
+    image: cuongntblockhive/micro_golang_front:1.0.0
     deploy:
       mode: replicated
       replicas: 1
@@ -85,3 +89,4 @@ services:
       POSTGRES_DB: micro_go_db
     volumes:
       - ./db-data/postgres/:/var/lib/postgresql/data/
+
