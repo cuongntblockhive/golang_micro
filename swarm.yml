@@ -90,3 +90,21 @@ services:
     volumes:
       - ./db-data/postgres/:/var/lib/postgresql/data/
 
+  caddy:
+    image: cuongntblockhive/micro_golang_caddy:1.0.0
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:
+
+
