@@ -5,13 +5,15 @@ services:
     image: cuongntblockhive/micro_golang_broker:1.0.1
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 3
 
   front-service:
-    image: cuongntblockhive/micro_golang_front:1.0.0
+    image: cuongntblockhive/micro_golang_front:1.0.1
     deploy:
       mode: replicated
       replicas: 1
+    environment:
+      BrokerUrl: "http://backend"
 
   listener-service:
     image: cuongntblockhive/micro_golang_listener:1.0.0

@@ -42,7 +42,7 @@
         const sent = document.getElementById("sent")
         const received = document.getElementById("received")
         getBrokerDataBtn.addEventListener("click", function () {
-            fetch('http://localhost:8080/broker', {
+            fetch('{{ .BrokerUrl}}/broker', {
                 method: "POST"
             })
                 .then(response => response.json())
@@ -63,7 +63,7 @@
                     message: "Hello world",
                 }
             }
-            fetch('http://localhost:8080/handle', {
+            fetch('{{ .BrokerUrl}}/handle', {
                 method: "POST",
                 body: JSON.stringify(payload),
             })
@@ -84,7 +84,7 @@
                     password: "verysecret",
                 }
             }
-            fetch('http://localhost:8080/handle', {
+            fetch('{{ .BrokerUrl}}/handle', {
                 method: "POST",
                 body: JSON.stringify(payload),
             })
@@ -105,7 +105,7 @@
                     data: "verysecret"
                 }
             }
-            fetch('http://localhost:8080/handle', {
+            fetch('{{ .BrokerUrl}}/handle', {
                 method: "POST",
                 body: JSON.stringify(payload),
             })
